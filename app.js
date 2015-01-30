@@ -1,6 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var exphbs  = require('express-handlebars');
 
 var app = express();
 var port = process.env.PORT || 16888;
@@ -8,16 +7,10 @@ var port = process.env.PORT || 16888;
 app.set('port', port);
 app.use(bodyParser.json());
 
-var handlebars = exphbs.create({
-    defaultLayout: 'main',
-    extname: '.hbs',
-    helpers: require('./helpers'),
-    layoutsDir: __dirname+'/views/layouts',
-    partialsDir: __dirname+'/views/partials'
-});
-app.set('views', __dirname+'/views');
-app.engine('.hbs', handlebars.engine);
-app.set('view engine', '.hbs');
+var handlebarsLib = require('./lib/handlebars/handlebars');
+handlebarsLib.setEngine(app);
+
+
 
 app.get('/', function(req, res, next) {
 	res.end('Hi!');
