@@ -1,17 +1,29 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var exphbs  = require('express-handlebars');
+
 var app = express();
 var port = process.env.PORT || 16888;
 
 app.set('port', port);
 app.use(bodyParser.json());
 
+var handlebars = exphbs.create({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    helpers: require('./helpers'),
+    layoutsDir: __dirname+'/views/layouts',
+    partialsDir: __dirname+'/views/partials'
+});
+app.set('views', __dirname+'/views');
+app.engine('.hbs', handlebars.engine);
+app.set('view engine', '.hbs');
+
 app.get('/', function(req, res, next) {
 	res.end('Hi!');
 });
 
 
-var bingoRenderer = require('./bingo-renderer');
 var waterskulls = require('waterskulls');
 
 // Display an old difficulty-synergy card.
@@ -28,9 +40,9 @@ app.get('/test/difficulty-synergy', function(req, res, next) {
 		return res.status(500).end(error.stack);
 	}
 	// Make pretty page
-	bingoRenderer.renderBingoPage(card, function(error, html) {
-		if(error) return res.status(500).end(error.stack);
-		res.send(html);
+	res.render('test-bingo', {
+		pageTitle: 'A bingo board!',
+		card: card
 	});
 });
 

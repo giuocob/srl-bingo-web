@@ -6,6 +6,7 @@
 		"express": "4.11.1",
 		"body-parser": "1.10.2",
 		"handlebars": "2.0.0",
+		"express-handlebars": "1.1.0",
 		"async": "*",
 		"waterskulls": "giuocob/ProjectWaterskulls"
 	},
