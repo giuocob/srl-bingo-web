@@ -1,3 +1,4 @@
+var config = require('./config');
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -16,6 +17,8 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res, next) {
 	res.end('Hi!');
 });
+
+var baseUrl = config.url;  // This is us
 
 
 var waterskulls = require('waterskulls');
@@ -36,8 +39,32 @@ app.get('/test/difficulty-synergy', function(req, res, next) {
 		return res.status(500).end(error.stack);
 	}
 	// Make pretty page
-	res.render('test-bingo', {
+	res.render('simple-bingo', {
 		pageTitle: 'OoT Bingo',
+		card: displayCard
+	});
+});
+
+// Display an old difficulty-synergy card.
+// Accepts seed only.
+app.get('/bigbingo', function(req, res, next) {
+	var params = {
+		size: 7
+	};
+	if(req.query.seed !== undefined) params.seed = req.query.seed;
+	var card, displayCard;
+	try {
+		card = waterskulls.generateDifficultySynergyCard(params);
+		displayCard = bingoHandlebars.getCardDisplayFormat(card);
+	} catch(error) {
+		return res.status(500).end(error.stack);
+	}
+	var seed = card.seed;
+	var permLink = baseUrl + '/bigbingo?seed=' + seed;
+	// Make pretty page
+	res.render('big-bingo', {
+		pageTitle: 'OoT Bingo',
+		permLink: permLink,
 		card: displayCard
 	});
 });

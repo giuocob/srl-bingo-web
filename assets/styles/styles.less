@@ -1,3 +1,134 @@
+.unselectable {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.insetboxshadow {
+	box-shadow: inset 0px 0px 50px rgba(0, 0, 0, .6);
+	-moz-box-shadow: inset 0px 0px 50px rgba(0, 0, 0, .6);
+	-webkit-box-shadow: inset 0px 0px 50px rgba(0, 0, 0, .6);
+}
+
+// Spacing constants
+@gutter: 16px;
+
+// Colors
+@black: #000;
+@white: #fff;
+@blue: #3c70df;
+@darkblue: #1448b3;
+@grey: #424242;
+@lightgrey: #aaa;
+@darkgrey: #131313;
+@darkgreyblue: #000811;
+
+// Font stuff
+.sans {
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size:0.92rem;
+    line-height:1.22rem;
+}
+
+@small: 93%;
+@smaller: 85%;
+@evensmaller: 75%;
+@normal: 100%;
+@big: 115%;
+@bigger: 135%;
+
+// Text style and spacing
+.italic { font-style: italic; }
+.bold { font-weight:700; }
+.left { float:left; }
+.right { float:right; }
+.center { text-align:center; }
+
+
+
+
 body {
-	background-color: #dddddd
+	background: @darkgrey;
+	.sans;
+}
+
+// Bingo stuff
+table#bingo {
+	.unselectable;
+	margin-top: @gutter;
+	border-collapse: collapse;
+	border-spacing: 0px;
+
+	// This goes on each row/col/diag header
+	.rowcol {
+        background: @darkgreyblue;
+        font-size: @evensmaller;
+        color: @blue;
+        .bold;
+        border: 1px @darkblue/2 solid;
+        padding: 0px 5px;
+        
+        &:hover { color: @white; background: @darkblue; }
+    }
+
+    tr {
+    	// This matches column and diagonal headers
+        &:first-child, &:last-child { 
+            td {
+            	height: 30px;
+            	.rowcol;
+            }
+        }
+    
+        td { 
+            .insetboxshadow;
+            &:first-child {
+            	width: 35px;
+            	.rowcol;
+            }
+            
+            font-size: @small;
+            color: @white;
+            padding: 0px 6px;
+            cursor: pointer;
+            width: 100px;
+            height: 95px;
+            text-align: center;
+            border: 1px @grey solid;
+            margin: 0px;
+            background: @black;
+
+            &:hover, &.hover {
+            	background:#001a36;
+            	color:#fff;
+            }
+            
+            &.greensquare {
+                background: #005511;
+                &:hover, &.hover {
+                	background:#007722;
+                }
+            }
+            
+            &.redsquare {
+                background: #550011;
+                &:hover, &.hover {
+                	background:#770022;
+                }
+            }
+
+        }
+    }
+}
+
+div.bingo-info {
+	margin-top: @gutter;
+    p {
+        margin: 5px 0px;
+        color: @lightgrey;
+        font-size: @big;
+    }
 }
