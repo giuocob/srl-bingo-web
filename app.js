@@ -18,6 +18,7 @@ app.get('/', function(req, res, next) {
 
 
 var waterskulls = require('waterskulls');
+var bingoHandlebars = require('./lib/handlebars/bingo');
 
 // Display an old difficulty-synergy card.
 // Accepts size (3-7) and seed as optional parameters.
@@ -26,16 +27,17 @@ app.get('/test/difficulty-synergy', function(req, res, next) {
 	var seed, size;
 	if(req.query.size) params.size = parseInt(req.query.size, 10);
 	if(req.query.seed !== undefined) params.seed = req.query.seed;
-	var card;
+	var card, displayCard;
 	try {
 		card = waterskulls.generateDifficultySynergyCard(params);
+		displayCard = bingoHandlebars.getCardDisplayFormat(card);
 	} catch(error) {
 		return res.status(500).end(error.stack);
 	}
 	// Make pretty page
 	res.render('test-bingo', {
 		pageTitle: 'A bingo board!',
-		card: card
+		card: displayCard
 	});
 });
 

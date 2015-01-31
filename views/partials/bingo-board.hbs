@@ -1,1 +1,9 @@
-{{{simpleCard .}}}
+<table id="bingo">
+	{{#each this}}
+		<tr>
+		{{#each this}}
+			<td id="{{this.id}}" class="{{joinWithSpaces this.classes}}">{{this.content}}</td>
+		{{/each}}
+		</tr>
+	{{/each}}
+</table>
