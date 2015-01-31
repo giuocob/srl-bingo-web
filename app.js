@@ -69,5 +69,29 @@ app.get('/bigbingo', function(req, res, next) {
 	});
 });
 
+// Kappa card
+// Accepts seed only.
+app.get('/kappa', function(req, res, next) {
+	var params = {
+		size: 1
+	};
+	if(req.query.seed !== undefined) params.seed = req.query.seed;
+	var card, displayCard;
+	try {
+		card = waterskulls.generateDifficultySynergyCard(params);
+		displayCard = bingoHandlebars.getCardDisplayFormat(card);
+	} catch(error) {
+		return res.status(500).end(error.stack);
+	}
+	var seed = card.seed;
+	var permLink = baseUrl + '/kappa?seed=' + seed;
+	// Make pretty page
+	res.render('big-bingo', {
+		pageTitle: 'OoT Bingo',
+		permLink: permLink,
+		card: displayCard
+	});
+});
+
 app.listen(app.get('port'));
 console.log('Server listening on port ' + port);

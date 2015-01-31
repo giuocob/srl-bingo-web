@@ -13,17 +13,6 @@ $(function() {
 		});
 
 		// Green/red/black square toggling
-		/*bingoElem.find('.square').toggle(
-			function () {
-			  $(this).addClass('greensquare');
-			},
-			function () {
-			  $(this).addClass('redsquare').removeClass('greensquare');
-			},
-			function () {
-			  $(this).removeClass('redsquare');
-			}
-		);*/
 		bingoElem.find('.square').each(function() {
 			var squareElem = $(this);
 			squareElem.click(function() {
