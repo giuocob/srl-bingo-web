@@ -11,6 +11,7 @@ var handlebarsLib = require('./lib/handlebars/handlebars');
 handlebarsLib.setEngine(app);
 
 
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res, next) {
 	res.end('Hi!');
@@ -36,7 +37,7 @@ app.get('/test/difficulty-synergy', function(req, res, next) {
 	}
 	// Make pretty page
 	res.render('test-bingo', {
-		pageTitle: 'A bingo board!',
+		pageTitle: 'OoT Bingo',
 		card: displayCard
 	});
 });
