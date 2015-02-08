@@ -1,0 +1,12 @@
+<table class="bingo-popout bingo-element">
+	<th style="height: {{this.row.headerHeight}}">
+		{{this.row.rowName}}
+	</th>
+	{{#each this.row.goals}}
+		<tr style="height: {{../row/goalHeight}}">
+			<td class="square">{{this}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+<script src="/js/bingo-board.js"></script>

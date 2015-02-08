@@ -11,6 +11,14 @@ app.use(bodyParser.json());
 var handlebarsLib = require('./lib/handlebars/handlebars');
 handlebarsLib.setEngine(app);
 
+// The easist dumbest error handler
+app.use(function(req, res, next) {
+	res.sendError = function(error) {
+		this.status(500).end(error.stack);
+	};
+	next();
+});
+
 
 app.use(express.static(__dirname + '/public'));
 
@@ -36,7 +44,7 @@ app.get('/test/difficulty-synergy', function(req, res, next) {
 		card = waterskulls.generateDifficultySynergyCard(params);
 		displayCard = bingoHandlebars.getCardDisplayFormat(card);
 	} catch(error) {
-		return res.status(500).end(error.stack);
+		return res.sendError(error);
 	}
 	// Make pretty page
 	res.render('simple-bingo', {
@@ -57,12 +65,12 @@ app.get('/bigbingo', function(req, res, next) {
 		card = waterskulls.generateDifficultySynergyCard(params);
 		displayCard = bingoHandlebars.getCardDisplayFormat(card);
 	} catch(error) {
-		return res.status(500).end(error.stack);
+		return res.sendError(error);
 	}
 	var seed = card.seed;
 	var permLink = baseUrl + '/bigbingo?seed=' + seed;
 	// Make pretty page
-	res.render('big-bingo', {
+	res.render('plain-bingo', {
 		pageTitle: 'OoT Bingo',
 		permLink: permLink,
 		card: displayCard
@@ -81,15 +89,37 @@ app.get('/kappa', function(req, res, next) {
 		card = waterskulls.generateDifficultySynergyCard(params);
 		displayCard = bingoHandlebars.getCardDisplayFormat(card);
 	} catch(error) {
-		return res.status(500).end(error.stack);
+		return res.sendError(error);
 	}
 	var seed = card.seed;
 	var permLink = baseUrl + '/kappa?seed=' + seed;
 	// Make pretty page
-	res.render('big-bingo', {
+	res.render('plain-bingo', {
 		pageTitle: 'OoT Bingo',
 		permLink: permLink,
 		card: displayCard
+	});
+});
+
+// Bingo poput handler, should be identical across card types
+app.get('/popout', function(req, res, next) {
+	var rowName = req.query.rowName;
+	if(!rowName) return res.sendError(new Error('rowName is a required parameter'));
+	var goals = [];
+	var goalCounter = 0;
+	while(true) {
+		var currentGoal = req.query['goal'+goalCounter];
+		if(!currentGoal) break;
+		if(goalCounter >= 10) return res.sendError(new Error('Too many goals provided'));
+		goals.push(currentGoal);
+		goalCounter++;
+	}
+	if(goals.length === 0) return res.sendError(new Error('No goals provided'));
+	var displayParams = bingoHandlebars.getPopoutDisplayFormat(rowName, goals);
+	res.render('bingo-popout', {
+		layout: 'fill-all',
+		pageTitle: 'Bingo Popout',
+		row: displayParams
 	});
 });
 
