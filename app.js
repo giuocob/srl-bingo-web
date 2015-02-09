@@ -49,7 +49,7 @@ app.get('/test', function(req, res, next) {
 		return res.sendError(error);
 	}
 	var seed = card.seed;
-	var permLink = baseUrl + '/bigbingo?seed=' + seed;
+	var permLink = baseUrl + '/test?seed=' + seed + '&size=' + card.size;
 	// Make pretty page
 	res.render('plain-bingo', {
 		pageTitle: 'OoT Bingo',
