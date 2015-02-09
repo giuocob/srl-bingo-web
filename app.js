@@ -34,11 +34,13 @@ var bingoHandlebars = require('./lib/handlebars/bingo');
 
 // Display an old difficulty-synergy card.
 // Accepts size (3-7) and seed as optional parameters.
-app.get('/test/difficulty-synergy', function(req, res, next) {
+app.get('/test', function(req, res, next) {
 	var params = {};
-	var seed, size;
-	if(req.query.size) params.size = parseInt(req.query.size, 10);
 	if(req.query.seed !== undefined) params.seed = req.query.seed;
+	if(req.query.size) {
+		var size = parseInt(req.query.size, 10);
+		if(!isNaN(size)) params.size = size;
+	}
 	var card, displayCard;
 	try {
 		card = waterskulls.generateDifficultySynergyCard(params);
@@ -46,9 +48,12 @@ app.get('/test/difficulty-synergy', function(req, res, next) {
 	} catch(error) {
 		return res.sendError(error);
 	}
+	var seed = card.seed;
+	var permLink = baseUrl + '/bigbingo?seed=' + seed;
 	// Make pretty page
-	res.render('simple-bingo', {
+	res.render('plain-bingo', {
 		pageTitle: 'OoT Bingo',
+		permLink: permLink,
 		card: displayCard
 	});
 });
