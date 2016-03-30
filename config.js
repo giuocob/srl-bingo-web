@@ -1,16 +1,45 @@
-var configs = {
+var fs = require('fs');
+var extend = require('extend');
+
+var env = process.env.NODE_ENV || 'local';
+
+var config = {
 	local: {
-		url: 'http://localhost:16888'
+		url: 'http://localhost:16888',
+		bingoApi: {
+
+		}
 	},
-	production: {
+	prod: {
 		url: 'http://bingo.giuocob.com'
 	}
 };
 
-var env = process.env.NODE_ENV || 'local';
-if(!configs[env]) {
-	console.log('Invalid NODE_ENV value: ' + env);
-	process.exit();
+var directory = fs.readdirSync(__dirname);
+if(directory.indexOf('config-private.js') != -1) {
+	var privateConfig = require('./config-private');
+	config = extend(true, config, privateConfig);
 }
 
-module.exports = configs[env];
+if(!env) {
+	console.log('No environment specified, exiting');
+	process.exit(1);
+}
+if(!config[env]) {
+	console.log('Invalid environment specified, exiting');
+	process.exit(1);
+}
+
+var envConfig = config[env];
+while(envConfig.inherits) {
+	var inheritEnv = envConfig.inherits;
+	delete envConfig.inherits;
+	if(!config[inheritEnv]) {
+		console.log('Config inherits from nonexistent env');
+		process.exit(1);
+	}
+	var baseConfig = config[inheritEnv];
+	envConfig = extend(true, baseConfig, envConfig);
+}
+
+module.exports = envConfig;

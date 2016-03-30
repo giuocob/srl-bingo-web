@@ -34,7 +34,7 @@ var bingoHandlebars = require('./lib/handlebars/bingo');
 
 // Display an old difficulty-synergy card.
 // Accepts size (3-7) and seed as optional parameters.
-app.get('/test', function(req, res, next) {
+app.get('/waterskulls/test', function(req, res, next) {
 	var params = {};
 	if(req.query.seed !== undefined) params.seed = req.query.seed;
 	if(req.query.size) {
@@ -49,7 +49,7 @@ app.get('/test', function(req, res, next) {
 		return res.sendError(error);
 	}
 	var seed = card.seed;
-	var permLink = baseUrl + '/test?seed=' + seed + '&size=' + card.size;
+	var permLink = baseUrl + req.path + '?seed=' + seed + '&size=' + card.size;
 	// Make pretty page
 	res.render('plain-bingo', {
 		pageTitle: 'OoT Bingo',
@@ -107,7 +107,7 @@ app.get('/kappa', function(req, res, next) {
 });
 
 // Bingo poput handler, should be identical across card types
-app.get('/popout', function(req, res, next) {
+app.get('/bingo-popout', function(req, res, next) {
 	var rowName = req.query.rowName;
 	if(!rowName) return res.sendError(new Error('rowName is a required parameter'));
 	var goals = [];
