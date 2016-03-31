@@ -1,7 +1,9 @@
 {{> bingo-board this.card.board}}
 <div class="bingo-info">
-	<p class="medium">Seed: {{this.card.seed}}</p>
-	<p class="medium">Link: {{this.permLink}}</p>
+	{{#if this.card.version}}<p class="medium">Version: {{this.card.version}}</p>{{/if}}
+	{{#if this.card.mode}}<p class="medium">Mode: {{this.card.mode}}</p>{{/if}}
+	{{#if this.card.seed}}<p class="medium">Seed: {{this.card.seed}}</p>{{/if}}
+	{{#if this.permLink}}<p class="medium">Permanent Link: {{this.permLink}}</p>{{/if}}
 	<p class="small">If popouts don't work, turn off your popup blocker.</p>
 </div>
 

@@ -7,11 +7,14 @@ var config = {
 	local: {
 		url: 'http://localhost:16888',
 		bingoApi: {
-
+			url: 'http://localhost:17888'
 		}
 	},
 	prod: {
-		url: 'http://bingo.giuocob.com'
+		url: 'http://www.srlbingo.com',
+		bingoApi: {
+			url: 'http://api.srlbingo.com'
+		}
 	}
 };
 
