@@ -43,6 +43,7 @@ app.get('/bingo/oot/standard', function(req, res, next) {
 	var params = {};
 	if(req.query.seed !== undefined) params.seed = req.query.seed;
 	if(req.query.version !== undefined) params.version = req.query.version
+	if(req.query.mode !== undefined) params.mode = req.query.mode;
 
 	var client = new BingoApiClient();
 	client.request('bingo/oot/standard/get-card', {
@@ -61,8 +62,7 @@ app.get('/bingo/oot/standard', function(req, res, next) {
 		var qs = {
 			seed: seed,
 			version: card.version,
-			mode: card.mode,
-			size: card.size
+			mode: card.mode
 		};
 		var permLink = baseUrl + req.path + '?' + querystring.stringify(qs);
 		// Make pretty page
