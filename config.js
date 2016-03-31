@@ -45,4 +45,5 @@ while(envConfig.inherits) {
 	envConfig = extend(true, baseConfig, envConfig);
 }
 
+envConfig.ENV = env;
 module.exports = envConfig;

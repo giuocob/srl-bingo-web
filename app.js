@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var XError = require('xerror');
 var querystring = require('query-string');
 
+console.log('\n\nStarting in env: ' + config.ENV);
+
 var app = express();
 var port = process.env.PORT || 16888;
 
