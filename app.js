@@ -74,6 +74,41 @@ app.get('/bingo/oot/standard', function(req, res, next) {
 	});
 });
 
+// Troll route! :D
+var trollGoals = [
+	'Both Heart Pieces in Lost Woods',
+	'Saria\'s Song',
+	'Goron Bracelet',
+	'Green Gauntlets',
+	'At Least 9 Magic Beans'
+];
+app.get('/bingo/oot/standerd', function(req, res, next) {
+	var card = {
+		size: 5,
+		goals: []
+	};
+	for(var i = 0; i < 25; i++) {
+		var index = Math.floor(Math.random() * trollGoals.length);
+		card.goals.push({
+			name: trollGoals[index]
+		});
+	}
+	try {
+		displayCard = bingoHandlebars.getCardDisplayFormat(card, {
+			omit: [ 'size' ]
+		});
+	} catch(error) {
+		return res.sendError(error);
+	}
+	var permLink = baseUrl + req.path;
+	res.render('plain-bingo', {
+		pageTitle: 'OoT Bingo',
+		permLink: permLink,
+		card: displayCard
+	});
+});
+
+
 // Display an old difficulty-synergy card.
 // Accepts size (3-7) and seed as optional parameters.
 app.get('/waterskulls/test', function(req, res, next) {
